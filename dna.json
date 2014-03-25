@@ -1,0 +1,59 @@
+{
+	"run_list": [ 
+		"recipe[apt]",
+		"recipe[postgresql::server]",
+		"recipe[curl]",
+    		"recipe[users]",
+    		"recipe[rvm::vagrant]",
+    		"recipe[rvm::system]",
+    		"recipe[nginx::passenger]",
+    		"recipe[nginx::source]",
+    		"recipe[postgresql::client]"
+	],
+	"rvm": {
+   		"rubies": ["2.1.1"],
+		"global": ["2.1.1"],
+    		"vagrant": { "system_chef_solo" : "/opt/ruby/bin/chef-solo" },
+    		"gems": {
+      			"2.1.1": [
+		        	{"name": "bundler"},
+			        {"name": "passenger"},
+			        {"name": "rake"}
+	   	 	]
+		}
+  	},
+
+	"nginx": {
+		"version": "1.2.5",
+    		"user": "deploy",
+    		"init_style": "init",
+    		"modules": [
+      			"http_stub_status_module",
+      			"http_ssl_module",
+      			"http_gzip_static_module"
+    		],
+    		"passenger": {
+      			"version": "3.0.18"
+    		},
+    		"configure_flags": [
+      			"--add-module=/var/lib/gems/1.9.1/gems/passenger-3.0.18/ext/nginx"
+    		],
+		"gzip_types": [
+      			"text/plain",
+	      		"text/html",
+      			"text/css",
+      			"text/xml",
+	      		"text/javascript",
+      			"application/json",
+      			"application/x-javascript",
+	      		"application/xml",
+     		 	"application/xml+rss"
+    		]
+  	},
+	"postgresql": {
+	  "password": {
+	    "postgres": ""
+	  }
+	}
+	
+}
